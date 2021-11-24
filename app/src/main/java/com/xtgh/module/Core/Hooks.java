@@ -11,6 +11,11 @@ public class Hooks {
         this.classLoader = classLoader;
     }
 
+    public void T827_P94() {
+        String className = "org.telegram.tgnet.ConnectionsManager";
+        universalNativeHook(className);
+    }
+
     public void T812_P91() {
         String className = "org.telegram.messenger.eh0";
         universalHook(className);
@@ -72,6 +77,37 @@ public class Hooks {
                 }
             });
             findAndHookMethod(className, classLoader, "j", int.class, new XC_MethodReplacement() {
+                @Override
+                protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                    return true;
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    private void universalNativeHook(String className) {
+        try {
+            findAndHookMethod(className, classLoader, "native_expireFile", new XC_MethodReplacement() {
+                @Override
+                protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                    return false;
+                }
+            });
+            findAndHookMethod(className, classLoader, "native_daysFile", new XC_MethodReplacement() {
+                @Override
+                protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                    return 999;
+                }
+            });
+            findAndHookMethod(className, classLoader, "native_removeInstance", long.class, new XC_MethodReplacement() {
+                @Override
+                protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                    return true;
+                }
+            });
+            findAndHookMethod(className, classLoader, "native_checkNewFile", long.class, new XC_MethodReplacement() {
                 @Override
                 protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
                     return true;
